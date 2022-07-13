@@ -711,119 +711,82 @@ void searchInfo(){
     printf("\n\n\t\t\tEnter the player name :  ");
     fflush(stdin);
     gets(searchName);
-    printf("\n\n\n\t\t================ Batting Statistics Information ================\n\n");
     int found = 0;
     while(fread(&crInfo,sizeof(struct payerInformation),1,cricketerFile))
     {
-        printf("The name is: %s\n", &crInfo.name);
+        //printf("The name is: %s\n", &crInfo.name);
         if(strcmp(strupr(searchName), crInfo.name) == 0)
         {
             found = 1;
-            positionXY(1,15);
-            printf("Name");
+            printf("\n\n=================================================\n");
+            printf("= :::::: \tBatting Information\t :::::: =\n");
+            printf("=\t\t\t\t\t\t=\n");
+            printf("=  Name\t\t\t:  ");
+            printf("%s\t\t=\n", crInfo.name);
+            printf("=  Country\t\t:  ");
+            printf("%s\t\t=\n", crInfo.country);
+            printf("=  Role\t\t\t:  ");
+            printf("%s\t\t=\n", crInfo.role);
+            printf("=  Match Played\t\t:  ");
+            printf("%d\t\t\t=\n", crInfo.matchPlayed);
+            printf("=  Innings\t\t:  ");
+            printf("%d\t\t\t=\n", crInfo.innings);
+            printf("=  Total Runs\t\t:  ");
+            printf("%d\t\t\t=\n", crInfo.totalRun);
+            printf("=  Batting Average\t:  ");
 
-            positionXY(24,15);
-            printf("Country");
+            if(crInfo.totalRun==0 && crInfo.innings==0 && crInfo.notOut==0)
+                printf("0.00\t\t=\n");
+            else
+            {
+                float batAvg = crInfo.totalRun / (crInfo.innings - crInfo.notOut);
+                printf("%.2f%\t\t\t=\n", batAvg);
+            }
 
-            positionXY(38,15);
-            printf("Role");
+            printf("=  Strike Rate\t\t:  ");
+            float batStrike = (crInfo.totalRun * 100)/crInfo.balls;
+            printf("%.2f\t\t=\n", batStrike);
 
-            positionXY(50,15);
-            printf("Match Played");
+            printf("\n= :::::: \tBowling Information\t :::::: =\n\n");
 
-            positionXY(68,15);
-            printf("Innings");
+            printf("=  ICC Ranking\t\t:  ");
+            printf("%d\t\t\t=\n", crInfo.iccRank);
+            printf("=  Run Given\t\t:  ");
+            printf("%d\t\t\t=\n", crInfo.runGiven);
+            printf("=  Wicket Taken\t\t:  ");
+            printf("%d\t\t\t=\n", crInfo.wicketTaken);
+            printf("=  Ball Bowled\t\t:  ");
+            printf("%d\t\t\t=\n", crInfo.ballBowled);
+            printf("=  Bowling Avg\t\t:  ");
 
-            positionXY(84,15);
-            printf("Total Runs");
+            if(crInfo.runGiven==0 && crInfo.wicketTaken==0)
+                printf("0.00\t\t\t=\n");
+            else
+            {
+                float bowlingAvg = crInfo.runGiven / crInfo.wicketTaken;
+                printf("%.2f\t\t=\n", bowlingAvg);
+            }
 
-            positionXY(100,15);
-            printf("Batting Average");
+            printf("=  Bowling Strike Rate\t:  ");
 
-            positionXY(124,15);
-            printf("Strike Rate");
-            printf("\n=====================================================================================================================================================");
+            if(crInfo.ballBowled==0 && crInfo.wicketTaken==0)
+                printf("0.00\t\t=\n");
+            else
+            {
+                float bowlingStrike = crInfo.ballBowled / crInfo.wicketTaken;
+                printf("%.2f\t\t=\n", bowlingStrike);
+            }
 
-            positionXY(1,17);
-            printf("%s", crInfo.name);
+            printf("=  Economy Rate\t\t:  ");
 
-            positionXY(24,17);
-            printf("%s", crInfo.country);
-
-            positionXY(38,17);
-            printf("%s", crInfo.role);
-
-            positionXY(50,17);
-            printf("%d", crInfo.matchPlayed);
-
-            positionXY(68,17);
-            printf("%d", crInfo.innings);
-
-            positionXY(84,17);
-            printf("%d", crInfo.totalRun);
-
-            positionXY(100,17);
-            float batAvg = (float)crInfo.totalRun / (crInfo.innings - crInfo.notOut);
-            printf("%.2f", (float)batAvg);
-
-            positionXY(124,17);
-            float batStrike = (crInfo.totalRun * 100)/(float)crInfo.balls;
-            printf("%.2f%%", (float)batStrike);
-
-            positionXY(1,20);
-            printf("\t\t================ Bowling Statistics Information ================");
-
-            positionXY(1,23);
-            printf("Name");
-
-            positionXY(24,23);
-            printf("ICC Ranking");
-
-            positionXY(38,23);
-            printf("Run Given");
-
-            positionXY(50,23);
-            printf("Wicket Taken");
-
-            positionXY(68,23);
-            printf("Ball Bowled");
-
-            positionXY(84,23);
-            printf("Bowling Avg");
-
-            positionXY(100,23);
-            printf("Bowling Strike Rate");
-
-            positionXY(124,23);
-            printf("Economy Rate");
-            printf("\n==========================================================================================================================================");
-
-            positionXY(1,25);
-            printf("%s", crInfo.name);
-
-            positionXY(24,25);
-            printf("%d", crInfo.iccRank);
-
-            positionXY(38,25);
-            printf("%d", crInfo.runGiven);
-
-            positionXY(50,25);
-            printf("%d", crInfo.wicketTaken);
-
-            positionXY(68,25);
-            printf("%d", crInfo.ballBowled);
-
-            positionXY(84,25);
-            float bowlingAvg = (float)crInfo.runGiven / crInfo.wicketTaken;
-            printf("%.2f", (float)bowlingAvg);
-
-            positionXY(100,25);
-            float bowlingStrike = crInfo.ballBowled / crInfo.wicketTaken;
-            printf("%.2f", (float)bowlingStrike);
-
-            positionXY(124,25);
-            float bowlingEconomy = (crInfo.runGiven * 6) / (float)crInfo.ballBowled;
-            printf("%.2f", (float)bowlingEconomy);
+            if(crInfo.runGiven==0 && crInfo.ballBowled==0)
+                printf("0.00\t\t=\n");
+            else
+            {
+                float bowlingEconomy = (crInfo.runGiven * 6) / crInfo.ballBowled;
+                printf("%.2f\t\t\t=\n", bowlingEconomy);
+            }
+            printf("=================================================\n\n\n");
         }
     }
     if(found == 0)
