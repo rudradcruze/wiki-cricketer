@@ -1035,7 +1035,8 @@ void searchRole() {
 }
 
 
-/* ============  Edit Info  ============ */
+//#########################################    Edit Info     #########################################
+/* ============  Search information by name  ============ */
 void editInfo(){
     char searchName[24];
     int updateRun, ballsPlayed, runGivenn, wicketTakenn, ballBowleddd;
