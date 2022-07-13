@@ -1,7 +1,7 @@
 # wiki-cricketer
 This program is about a cricket player management system. All in one player information holding system. Where user cam search player view all information and many more or an admin can enter a new player information and update information and delete information and may more.
 
-# Technologies I Use
+# Technologies
 * C
 
 # Functionalities
