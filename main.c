@@ -11,7 +11,6 @@
 #include<ctype.h>
 #include<string.h>
 #include<stdlib.h>
-#include<math.h>
 
 // function declaration
 void welcome(); // welcome screen function
@@ -830,7 +829,7 @@ void searchCountry() {
 
     while(fread(&crInfo,sizeof(struct payerInformation),1,cricketerFile))
     {
-        if(strcmp(strupr(searchCountryy), crInfo.country) == 0)
+        if(strcmpi(strupr(searchCountryy), crInfo.country) == 0)
         {
             printf("\n\n=================================================\n");
             printf("= :::::: \tBatting Information\t :::::: =\n");
@@ -1053,7 +1052,7 @@ void editInfo(){
     int found = 0;
     while(fread(&crInfo,sizeof(struct payerInformation),1,cricketerFile))
     {
-        if(strcmp(crInfo.name,strupr(searchName)) == 0)
+        if(strcmpi(crInfo.name,strupr(searchName)) == 0)
         {
             printf("\n\n\t\t\t================= Player Found =================");
             found = 1;
@@ -1220,7 +1219,7 @@ void editInfo(){
 }
 
 
-//#########################################    Remove information     #########################################
+/* ============  Remove information  ============ */
 void removeInfo() {
     char searchName[24];
     system("cls");
@@ -1228,25 +1227,33 @@ void removeInfo() {
 
     printf("\n\n\t\t\t================= Delete/Remove Player Information =================");
 
-    cricketerFile = fopen("playerInformation.txt", "r");    // open the original file
+    cricketerFile = fopen("playerInformation.txt", "r+");    // open the original file
     tempFile = fopen("temporaryCrInfo.txt", "w");
 
     printf("\n\n\t\t======================\tSearch Player By name\t======================");
     printf("\n\n\t\t\tEnter the player name :  ");
     fflush(stdin);
     gets(searchName);
+    int flag = 0;
     while(fread(&crInfo,sizeof(struct payerInformation),1,cricketerFile))
     {
-        if(strcmp(crInfo.name, searchName) != 0)
+        if(strcmpi(crInfo.name, searchName) != 0)
         {
-            fwrite(&crInfo, sizeof(struct payerInformation), 1, tempFile);
+            if(crInfo.name!=searchName)
+            {
+                fwrite(&crInfo, sizeof(struct payerInformation), 1, tempFile);
+                flag = 1;
+            }
         }
     }
     fclose(cricketerFile);
     fclose(tempFile);
     remove("playerInformation.txt");
     rename("temporaryCrInfo.txt", "playerInformation.txt");
-    printf("\n\n\t\t======================\tRecode Delete Successful\t======================");
+    if(flag==1)
+        printf("\n\n\t\t======================\tRecode Delete Successful\t======================");
+    else
+        printf("\n\n\t\t======================\tRecode Now Found\t======================");
     getch();
     repeatDelete:
         uCheck = 0;
@@ -1269,7 +1276,8 @@ void removeInfo() {
 }
 
 
-//#########################################    Exit Program     #########################################
+
+/* ============  RExit Program   ============ */
 void exitProgram() {
     system("cls");
     title();    // call title function
