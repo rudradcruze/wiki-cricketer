@@ -58,7 +58,6 @@ int main(){
     welcome();  // Welcome screen call
     loginRepeat:
     system("cls");
-    title();    // Title bar call
     masterLogin();  // master login user and admin function combine
     return 0;
 }
@@ -255,6 +254,7 @@ void login(){
 
 //#########################################    Master Login     #########################################
 void masterLogin(){
+    title();    // Title function
     int userChoice = 0;
     loginRepeat:
     printf("\n\n\n\t\t\tYou can login as a\n\n\t\t\t::: Enter 1 to Login in a Viewer\n\t\t\t::: Enter 2 to login a Admin\n\n\t\t\tEnter your choice here : ");
@@ -425,11 +425,12 @@ void menuViewer(){
 }
 
 
-//##########################################    Input Information     #########################################
+
+/* ============  Input Information  ============ */
 void cricketerInformation(){
     system("cls");
     title();    // title bar call
-    printf("\n\n\n\t\t\t================ Add Batsman Information ================\n\n");
+    printf("\n\n\n\t\t\t================ Add Batsman/Bowler Information ================\n\n");
     // players name input form user
     printf("\n\n\t\tPlayer Name\t\t:  ");
     fflush(stdin);
@@ -473,7 +474,7 @@ void cricketerInformation(){
     gets(crInfo.role);
     strupr(crInfo.role);
 
-    printf("\n\t\tIf you player is a batsman then give '0' of all bowler information, however if your player is a all rounder then input both otherwise do opposite  \n\n");
+    printf("\n\t\tIf you player is a batsman then give '0' of\nall bowler information, however if your player is a \nall rounder then input both otherwise do opposite.\n\n");
 
     // batting Style role
     printf("\t\tBatting Style\t\t:  ");
@@ -497,7 +498,7 @@ void cricketerInformation(){
 
     // Over score
     printf("\n\t\tOver / balls faced ~ you can enter via 2 way\t:  ");
-    printf("\n\t\t\t1. Over Faced\n\t\t\t2. Total Balled Faced\n\t\tEnter your choice here  : ");
+    printf("\n\t\t\t1. Over Faced\n\t\t\t2. Total Balled Faced\n\t\tEnter your choice here  :  ");
     overRepeat:
     uCheck = 0;
     fflush(stdin);
@@ -556,6 +557,8 @@ void cricketerInformation(){
     fflush(stdin);
     scanf("%d", &crInfo.total100);
 
+    printf("\n=====  Bowlers Info  =====\n");
+
     // total run given
     printf("\t\tTotal run given\t\t:  ");
     fflush(stdin);
@@ -594,7 +597,7 @@ void cricketerInformation(){
 }
 
 
-//##########################################    Save into File     #########################################
+/* ============  Save into File  ============ */
 void saveInfo(struct payerInformation crInfo, FILE *cricketerFile){
     cricketerFile = fopen("playerInformation.txt","a");
     fwrite(&crInfo,sizeof(struct payerInformation),1,cricketerFile);
@@ -607,144 +610,97 @@ void saveInfo(struct payerInformation crInfo, FILE *cricketerFile){
 }
 
 
-//#########################################    View all information     #########################################
+
+/* ============  View all information  ============ */
 void viewAllInfo() {
     int rowCount = 1;
     system("cls");
     title();    // title bar call
     printf("\n\n\n\t\t\t================ View All Player Information ================\n\n");
-    printf("\n\n\n\t\t\t================ Batting Statistics Information ================\n\n");
+
     cricketerFile = fopen("playerInformation.txt", "r");    // open the file
 
-    //  title bar
-    positionXY(1,15);
-    printf("Name");
-
-    positionXY(24,15);
-    printf("Country");
-
-    positionXY(38,15);
-    printf("Role");
-
-    positionXY(50,15);
-    printf("Match Played");
-
-    positionXY(68,15);
-    printf("Innings");
-
-    positionXY(80,15);
-    printf("Total Runs");
-
-    positionXY(94,15);
-    printf("Batting Average");
-
-    positionXY(110,15);
-    printf("Strike Rate");
-    printf("\n============================================================================================================================================");
-
-    rowCount = 17;
     while(fread(&crInfo,sizeof(struct payerInformation),1,cricketerFile))
     {
-
         //  actual value shown
-        positionXY(1,rowCount);
-        printf("%s", crInfo.name);
+        printf("=================================================\n");
+        printf("= :::::: \tBatting Information\t :::::: =\n");
+        printf("=\t\t\t\t\t\t=\n");
+        printf("=  Name\t\t\t:  ");
+        printf("%s\t\t=\n", crInfo.name);
+        printf("=  Country\t\t:  ");
+        printf("%s\t\t=\n", crInfo.country);
+        printf("=  Role\t\t\t:  ");
+        printf("%s\t\t=\n", crInfo.role);
+        printf("=  Match Played\t\t:  ");
+        printf("%d\t\t\t=\n", crInfo.matchPlayed);
+        printf("=  Innings\t\t:  ");
+        printf("%d\t\t\t=\n", crInfo.innings);
+        printf("=  Total Runs\t\t:  ");
+        printf("%d\t\t\t=\n", crInfo.totalRun);
+        printf("=  Batting Average\t:  ");
 
-        positionXY(24,rowCount);
-        printf("%s", crInfo.country);
+        if(crInfo.totalRun==0 && crInfo.innings==0 && crInfo.notOut==0)
+            printf("0.00\t\t=\n");
+        else
+        {
+            float batAvg = crInfo.totalRun / (crInfo.innings - crInfo.notOut);
+            printf("%.2f%\t\t\t=\n", batAvg);
+        }
 
-        positionXY(38,rowCount);
-        printf("%s", crInfo.role);
-
-        positionXY(50,rowCount);
-        printf("%d", crInfo.matchPlayed);
-
-        positionXY(68,rowCount);
-        printf("%d", crInfo.innings);
-
-        positionXY(80,rowCount);
-        printf("%d", crInfo.totalRun);
-
-        positionXY(94,rowCount);
-        float batAvg = crInfo.totalRun / (crInfo.innings - crInfo.notOut);
-        printf("%.2f%", batAvg);
-
-        positionXY(110,rowCount);
+        printf("=  Strike Rate\t\t:  ");
         float batStrike = (crInfo.totalRun * 100)/crInfo.balls;
-        printf("%.2f", batStrike);
+        printf("%.2f\t\t=\n", batStrike);
 
-        rowCount++;
+        printf("\n= :::::: \tBowling Information\t :::::: =\n\n");
+
+        printf("=  ICC Ranking\t\t:  ");
+        printf("%d\t\t\t=\n", crInfo.iccRank);
+        printf("=  Run Given\t\t:  ");
+        printf("%d\t\t\t=\n", crInfo.runGiven);
+        printf("=  Wicket Taken\t\t:  ");
+        printf("%d\t\t\t=\n", crInfo.wicketTaken);
+        printf("=  Ball Bowled\t\t:  ");
+        printf("%d\t\t\t=\n", crInfo.ballBowled);
+        printf("=  Bowling Avg\t\t:  ");
+
+        if(crInfo.runGiven==0 && crInfo.wicketTaken==0)
+            printf("0.00\t\t\t=\n");
+        else
+        {
+            float bowlingAvg = crInfo.runGiven / crInfo.wicketTaken;
+            printf("%.2f\t\t=\n", bowlingAvg);
+        }
+
+        printf("=  Bowling Strike Rate\t:  ");
+
+        if(crInfo.ballBowled==0 && crInfo.wicketTaken==0)
+            printf("0.00\t\t=\n");
+        else
+        {
+            float bowlingStrike = crInfo.ballBowled / crInfo.wicketTaken;
+            printf("%.2f\t\t=\n", bowlingStrike);
+        }
+
+        printf("=  Economy Rate\t\t:  ");
+
+        if(crInfo.runGiven==0 && crInfo.ballBowled==0)
+            printf("0.00\t\t=\n");
+        else
+        {
+            float bowlingEconomy = (crInfo.runGiven * 6) / crInfo.ballBowled;
+            printf("%.2f\t\t\t=\n", bowlingEconomy);
+        }
+        printf("=================================================\n\n\n");
     }
-    fclose(cricketerFile);
 
-    //  title bar
-    positionXY(1,rowCount+4);
-    printf("\n\n\n\t\t\t================ Bowling Statistics Information ================\n\n");
-
-    positionXY(1,rowCount+6);
-    printf("Name");
-
-    positionXY(24,rowCount+6);
-    printf("ICC Ranking");
-
-    positionXY(38,rowCount+6);
-    printf("Run Given");
-
-    positionXY(50,rowCount+6);
-    printf("Wicket Taken");
-
-    positionXY(68,rowCount+6);
-    printf("Ball Bowled");
-
-    positionXY(84,rowCount+6);
-    printf("Bowling Avg");
-
-    positionXY(100,rowCount+6);
-    printf("Bowling Strike Rate");
-
-    positionXY(124,rowCount+6);
-    printf("Economy Rate");
-    printf("\n==========================================================================================================================================");
-    rowCount +=8;
-    cricketerFile = fopen("playerInformation.txt", "r");    // open the file
-    while(fread(&crInfo,sizeof(struct payerInformation),1,cricketerFile))
-    {
-        // Bowling Information =====================
-
-        positionXY(1,rowCount);
-        printf("%s", crInfo.name);
-
-        positionXY(24,rowCount);
-        printf("%d", crInfo.iccRank);
-
-        positionXY(38,rowCount);
-        printf("%d", crInfo.runGiven);
-
-        positionXY(50,rowCount);
-        printf("%d", crInfo.wicketTaken);
-
-        positionXY(68,rowCount);
-        printf("%d", crInfo.ballBowled);
-
-        positionXY(84,rowCount);
-        float bowlingAvg = crInfo.runGiven / crInfo.wicketTaken;
-        printf("%.2f", bowlingAvg);
-
-        positionXY(100,rowCount);
-        float bowlingStrike = crInfo.ballBowled / crInfo.wicketTaken;
-        printf("%.2f", bowlingStrike);
-
-        positionXY(124,rowCount);
-        float bowlingEconomy = (crInfo.runGiven * 6) / crInfo.ballBowled;
-        printf("%.2f", bowlingEconomy);
-        rowCount++;
-    }
     fclose(cricketerFile);  // close the file
     getch();
 }
 
 
-//#########################################    Search information by name     #########################################
+
+/* ============  Search information by name  ============ */
 void searchInfo(){
     char searchName[24];
     int rowCount = 1;
