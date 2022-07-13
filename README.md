@@ -15,4 +15,4 @@ This program is about a cricket player management system. All in one player info
     * Only viewing option
 * Delete from file
 
-<h3><a href="main.c" target="_blank">main.c</a></h3>
+<h3>Source Code: <a href="main.c" target="_blank">main.c</a></h3>
