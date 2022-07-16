@@ -28,7 +28,6 @@ void saveInfo();    // Save into the file function
 void viewAllInfo(); // View all information function
 void searchInfo();  // search by name function
 void editInfo();    // edit information function
-void positionXY(short x, short y);  // position up & down view -- 'x' for horizontal, 'y' for vertical
 void searchCountry();   // search by country function
 void searchRole();  // search using the role
 void removeInfo();  // remove data for a player function
